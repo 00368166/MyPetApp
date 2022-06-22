@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "MyPet",
+    "slug": "MyPet",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/pet.jpg",
+    "splash": {
+      "image": "./assets/pet.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/pet.jpg",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/pet.jpg"
+    }
+  }
+}
