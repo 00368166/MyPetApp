@@ -11,7 +11,7 @@ import {
 } from "react-native-rapi-ui";
 
 import { Ionicons } from "@expo/vector-icons";
-import { supabase } from "../initSupabase";
+import { supabase } from "../lib/initSupabase";
 import {
   Card,
   CardTitle,
@@ -20,6 +20,7 @@ import {
   CardButton,
   CardImage,
 } from "react-native-cards";
+import { RefreshControl, SafeAreaView } from 'react-native';
 
 import { Button, Input, ListItem, CheckBox } from "react-native-elements";
 
@@ -51,6 +52,9 @@ export default function ({
     fetchTodos();
   }, []);
 
+  const [refreshing, setRefreshing] = useState(true);
+  const [userData, setUserData] = useState([]);
+
   const fetchTodos = async () => {
     const { data: todos, error } = await supabase
       .from<Todo>("dogos")
@@ -58,6 +62,8 @@ export default function ({
       .order("id", { ascending: false });
     if (error) console.log("error", error);
     else setTodos(todos!);
+    
+    setRefreshing(false);
   };
 
   const addTodo = async (taskText: string) => {
@@ -122,6 +128,10 @@ export default function ({
             scrollEnabled={true}
             data={todos}
             keyExtractor={(item) => `${item.id}`}
+            
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchTodos} />
+            }
             renderItem={({ item: todo }) => (
               <ListItem bottomDivider>
                 <ListItem.Content>

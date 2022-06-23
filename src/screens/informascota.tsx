@@ -32,7 +32,6 @@ export default function ({
           />
         }
         leftAction={() => navigation.goBack()}
-        
       />
       <View>
 

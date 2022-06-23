@@ -26,45 +26,63 @@ import {
     SectionContent,
   } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import { supabase } from "../lib/initSupabase";
 
+import { sesion_activa } from '../provider/AuthProvider'
 export default function ({
   navigation,route,
 }: NativeStackScreenProps<MainStackParamList, "SecondScreen">) {
   type Todo = {
     id: number;
     user_id: string;
-    nombrea: string;
-    tipoa: string;
-    cumplea: Date;
-    descripa: string;
-    esteria: boolean;
-    saluda: string;
+    nombre: string;
+    tipo: string;
+    cumple: Date;
+    descrip: string;
+    esterilizado: boolean;
+    descrip_salud: string;
   };
-  const { isDarkmode, setTheme } = useTheme();
-  const [nombre, setNombre] = useState<string>("");
-  const [tipo, setTipo] = useState<string>("");
-  const [cumple, setCumple] = useState(new Date());
   
-  const [descrip, setDescrip] = useState<string>("");
+  const { user } = sesion_activa();
+  const { isDarkmode, setTheme } = useTheme();
+  const [name, setNombre] = useState<string>("");
+  const [type, setTipo] = useState<string>("");
+  const [birth, setCumple] = useState(new Date());
+  
+  const [desc, setDescrip] = useState<string>("");
   const [esterilizado, setEsterilizado] = useState<boolean>(false);
   
-  const [direccion, setDireccion] = useState<string>("");
+  const [direc, setDireccion] = useState<string>("");
   
-  const [salud, setSalud] = useState<string>("");
+  const [health, setSalud] = useState<string>("");
   
   const [loading, setLoading] = useState<boolean>(false);
   const currentDay = new Date();
 
   const [todos, setTodos] = useState<Array<Todo>>([]);
   
+
+  const fetchTodos = async () => {
+    const { data: todos, error } = await supabase
+      .from<Todo>("dogos")
+      .select("id,user_id,nombre,tipo,cumple,descrip,esterilizado")
+      .order("id", { ascending: false });
+    if (error) console.log("error", error);
+    else setTodos(todos!);
+  };
+
+
   const addTodo = async () => {
       const { data: todo, error } = await supabase
         .from<Todo>("dogos")
-        .insert({ user_id: user!.id,nombrea:nombre,tipoa:tipo,cumplea:cumple,descripa:descrip,esteria:esterilizado,saluda:salud})
+        .insert({ user_id: user!.id,nombre:name,tipo:type,cumple:birth,descrip:desc,esterilizado:esterilizado,descrip_salud:health})
         .single();
-      if (error) console.log(error.message);
+    console.log(todo);
+      if (error) {console.log(error.message);
+    }
       else {
         setTodos([todo!, ...todos]);
+        
       }
   };
 
@@ -82,7 +100,6 @@ export default function ({
           />
         }
         leftAction={() => navigation.goBack()}
-        
       />
       <ScrollView
         contentContainerStyle={{
@@ -147,28 +164,28 @@ export default function ({
           <TextInput
             containerStyle={{ marginTop: 15 }}
             placeholder="Ingresa el nombre"
-            value={nombre}
+            value={name}
             autoCapitalize="none"
             autoCompleteType="off"
             autoCorrect={false}
             secureTextEntry={false}
-            onChangeText={(text) => setNombre()}
+            onChangeText={(name) => setNombre(name)}
           />
           <Text>Tipo de mascota:</Text>
           <TextInput
             containerStyle={{ marginTop: 15 }}
             placeholder="Ingresa el nombre"
-            value={tipo}
+            value={type}
             autoCapitalize="none"
             autoCompleteType="off"
             autoCorrect={false}
             secureTextEntry={false}
-            onChangeText={(text) => setTipo()}
+            onChangeText={(type) => setTipo(type)}
           />
           <Text>Cumpleaños:</Text>
           <DatePicker
         style={{width: 200}}
-        date={cumple}
+        date={birth}
         mode="date"
         placeholder="select date"
         format="YYYY-DD-MM"
@@ -195,23 +212,23 @@ export default function ({
           <TextInput
             containerStyle={{ marginTop: 15 }}
             placeholder="Describe tu mascota"
-            value={descrip}
+            value={desc}
             autoCapitalize="none"
             autoCompleteType="off"
             autoCorrect={false}
             secureTextEntry={false}
-            onChangeText={(text) => setDescrip()}
+            onChangeText={(desc) => setDescrip(desc)}
           />
       <Text>Estado de salud</Text>
           <TextInput
             containerStyle={{ marginTop: 15 }}
             placeholder="Describe tu mascota"
-            value={salud}
+            value={health}
             autoCapitalize="none"
             autoCompleteType="off"
             autoCorrect={false}
             secureTextEntry={false}
-            onChangeText={(text) => setSalud()}
+            onChangeText={(health) => setSalud(health)}
           />
 
 <View style={{flexDirection: "row",
@@ -224,11 +241,11 @@ export default function ({
           color={esterilizado ? '#4630EB' : undefined}
         />
       </View>
-      
+         
           <Button
             text={loading ? "Registrado" : "Registrar"}
-            onPress={() => {
-              addTodo();
+            onPress={ async () => {
+              await addTodo();
             }}
             style={{
               marginTop: 20,

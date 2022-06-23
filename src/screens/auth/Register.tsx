@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from "react-native";
-import { supabase } from "../../initSupabase";
+import { supabase } from "../../lib/initSupabase";
 import { AuthStackParamList } from "../../types/navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {

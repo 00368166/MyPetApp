@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { MainStackParamList } from "../types/navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { supabase } from "../initSupabase";
+import { supabase } from "../lib/initSupabase";
 
 
 //import { Layout, Text } from "react-native-rapi-ui";
