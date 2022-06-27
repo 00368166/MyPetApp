@@ -110,7 +110,9 @@ export default function ({
         }
         rightAction={() => navigation.navigate('agregarmascotas')}
       />
-      <ScrollView style={styles.principal}>
+      <ScrollView refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchTodos} />
+            }>
         <Section>
           <View style={styles.container}>
             <Text size="md" fontWeight="bold" size="h1" style={styles.titulo}>
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
   widget: {
     flex: 2,
     margin: 10,
-    padding: 20,
+    padding: 1,
     //justifyContent: 'center',
     //alignItems: 'center',
     borderRadius: 50,
@@ -222,8 +224,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   principal: {
-    flexGrow: 1,
-    top: 5,
+    flex: 2
   },
   titulo: {
     marginLeft: 5,

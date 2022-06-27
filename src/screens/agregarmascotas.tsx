@@ -247,6 +247,7 @@ export default function ({
             onPress={ async () => {
               await addTodo();
             }}
+            
             style={{
               marginTop: 20,
               height: 50,

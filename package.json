@@ -26,6 +26,7 @@
     "react-native-cards": "^1.1.4",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^3.4.2",
+    "react-native-expo-fancy-alerts": "^2.1.0",
     "react-native-rapi-ui": "^0.2.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",

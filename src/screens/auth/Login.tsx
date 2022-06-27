@@ -10,7 +10,7 @@ import {
 import { supabase } from "../../lib/initSupabase";
 import { AuthStackParamList } from "../../types/navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { FancyAlert } from 'react-native-expo-fancy-alerts';
 import {
   Layout,
   Text,
@@ -19,6 +19,14 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
+import Swal from 'sweetalert2'
+
+import { StyleSheet } from "react-native";
+
+import { Ionicons } from '@expo/vector-icons';
+// CommonJS
+
+
 
 export default function ({
   navigation,
@@ -27,8 +35,17 @@ export default function ({
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [visible, setVisible] = React.useState(false);
+  const [error_msg, setError] = useState<string>("");
+  
+  const toggleAlert = React.useCallback(() => {
+    setVisible(!
+      visible);
+      
+  }, [visible]);
 
   async function login() {
+    console.log('aqui va el alert');
     setLoading(true);
     const { user, error } = await supabase.auth.signIn({
       email: email,
@@ -36,17 +53,46 @@ export default function ({
     });
     if (!error && !user) {
       setLoading(false);
-      alert("Check your email for the login link!");
+      setError("Check your email for the login link!");
+      toggleAlert();
+     //alert("Check your email for the login link!");
     }
     if (error) {
       setLoading(false);
-      alert(error.message);
+    //alert(error.message);
+    
+    setError(error.message);
+    toggleAlert();
     }
-    alert(user.message);
+    //alert(user.message);
+    setError(user.message);
+    toggleAlert();
   }
   return (
-    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+<KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
+      <FancyAlert
+  visible={visible}
+      style={styles.alert}
+      icon={
+        <View style={[ styles.icon, { borderRadius: 32 } ]}>
+          
+          <Ionicons
+            name={Platform.select({ ios: 'ios-close', android: 'md-close' })}
+            size={36}
+            color="#FFFFFF"
+          />
+        </View>
+      } 
+    >
+      <View style={styles.content}>
+        <Text style={styles.contentText}>{error_msg}</Text>
+  
+        <TouchableOpacity style={styles.btn} onPress={toggleAlert}>
+          <Text style={styles.btnText}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    </FancyAlert>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -125,8 +171,8 @@ export default function ({
             />
             <Button
               text={loading ? "Cargando" : "Iniciar sesión"}
-              onPress={() => {
-                login();
+              onPress={ () => {
+                 login();
               }}
               style={{
                 marginTop: 20,
@@ -162,7 +208,7 @@ export default function ({
                 </Text>
               </TouchableOpacity>
             </View>
-            { /* 
+            
                         <View
               style={{
                 flexDirection: "row",
@@ -181,7 +227,6 @@ export default function ({
                 </Text>
               </TouchableOpacity>
             </View>
-            */}
 
             <View
               style={{
@@ -213,3 +258,44 @@ export default function ({
     </KeyboardAvoidingView>
   );
 }
+const styles = StyleSheet.create({
+  alert: {
+    backgroundColor: '#EEEEEE',
+  },
+  icon: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#C3272B',
+    width: '100%',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -16,
+    marginBottom: 16,
+  },
+  contentText: {
+    textAlign: 'center',
+  },
+  btn: {
+    borderRadius: 32,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    alignSelf: 'stretch',
+    backgroundColor: '#C3272B',
+    marginTop: 16,
+    minWidth: '50%',
+    paddingHorizontal: 16,
+  },
+  btnText: {
+    color: '#FFFFFF',
+  },
+});
