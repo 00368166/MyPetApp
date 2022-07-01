@@ -23,6 +23,7 @@ import { FancyAlert } from 'react-native-expo-fancy-alerts';
 
 import { StyleSheet } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import Login from "./Login";
 
 export default function ({
   navigation,
@@ -93,7 +94,12 @@ export default function ({
       <View style={styles.content}>
         <Text style={styles.contentText}>{error_msg}</Text>
   
-        <TouchableOpacity style={styles.btn} onPress={toggleAlert}>
+        <TouchableOpacity style={styles.btn} onPress={() => {
+          toggleAlert();
+          setEmail('');
+          setPassword('');
+          navigation.navigate("Login");
+              }}>
           <Text style={styles.btnText}>OK</Text>
         </TouchableOpacity>
       </View>
@@ -115,7 +121,11 @@ export default function ({
       <View style={styles.content}>
         <Text style={styles.contentText}>{error_msg2}</Text>
   
-        <TouchableOpacity style={styles.btnmalo} onPress={toggleAlert2}>
+        <TouchableOpacity style={styles.btnmalo} onPress={() => {
+          toggleAlert2();/*
+          setEmail('');
+          setPassword('');*/
+              }}>
           <Text style={styles.btnText}>OK</Text>
         </TouchableOpacity>
       </View>

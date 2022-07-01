@@ -40,7 +40,7 @@ export default function ({
               onPress={async () => {
                 const { error } = await supabase.auth.signOut();
                 if (!error) {
-                  alert("Signed out!");
+                 // alert("Signed out!");
                 }
                 if (error) {
                   alert(error.message);
