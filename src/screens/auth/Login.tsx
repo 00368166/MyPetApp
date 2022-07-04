@@ -170,22 +170,46 @@ function check_fingerprint(){
 
   
 }
+
+async function loginAlternativo(){
+
+  console.log('aqui va el alert');
+  setLoading(true);
+  const { user, error } = await supabase.auth.signIn({
+    email: email,
+    password: password_temp,
+  });
+  if (!error && !user) {
+    setLoading(false);
+    setError("Se ah enviado tu correo para revision");
+    toggleAlert();
+   //alert("Check your email for the login link!");
+  }
+  if (error) {
+    setLoading(false);
+  //alert(error.message);
+  
+  setError(error.message);
+  toggleAlert();
+  
+  }
+  //alert(user.message);
+  setError(user.message);
+  toggleAlert();
+  if(user){
+    const result_2 = save(secureemail,email);
+  if(result_2){
+    console.log('save email ' + securityEmail);
+    };
+    
+  const result_3 = save(securePassword,password_temp);
+  if(result_3){
+    console.log('save password ' + securityPassword);
+    };
+    console.log('logeado');
+  }
+}
   async function login() {
-    console.log(securityEmail + ' y ' + securityPassword);
-    /*
-    
-    
-    
-    */
-    
-      
-    
-    
-  //const rest = async () => { await console.log(getValueFor('perro')); };
-
-  //console.log(rest);
-
-    
     console.log('aqui va el alert');
     setLoading(true);
     const { user, error } = await supabase.auth.signIn({
@@ -450,27 +474,33 @@ function check_fingerprint(){
       'https://www.nicepng.com/png/detail/440-4408167_fingerprint-png-download-png-image-with-transparent-ios.png',
   }}
   
-  onPress={() => {
+  onPress={async () => {
     
-  if(flagfinger == true){
-    setPassword(password_temp);
-    setflag(false);
-login();
+//   if(flagfinger == true){
+//     setPassword(password_temp);
+//     setflag(false);
+// login();
 
-  }
-    const result = LocalAuthentication.authenticateAsync();
+//   }
+    const result = await LocalAuthentication.authenticateAsync();
     console.log(result);
-  if(result){
-    result.then((espera) => {
-      console.log(espera);
-      if(espera.success == true){
-        //cambio();
-        console.log(email + ' ' + password);
-        setflag(true);
-        //
-      }
-    });
-  }
+    if (result.success) {
+      setPassword(password_temp);
+      console.log(email + ' ' + password);
+      loginAlternativo();
+    }
+  // if(result){
+  //   result.then((espera) => {
+  //     console.log(espera);
+  //     if(espera.success == true){
+  //       //cambio();
+  //       console.log(email + ' ' + password);
+  //       setflag(true);
+  //       //
+  //     }
+  //   });
+  // }
+
   }}
   containerStyle={{alignSelf: "center",}}
   
@@ -527,15 +557,6 @@ login();
                 justifyContent: "center",
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ForgetPassword");
-                }}
-              >
-                <Text size="md" fontWeight="bold">
-                  Olvide mi contraseña
-                </Text>
-              </TouchableOpacity>
             </View>
             </View>
 

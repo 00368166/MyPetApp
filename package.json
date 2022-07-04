@@ -34,7 +34,8 @@
     "react-native-web": "0.17.1",
     "sweetalert2": "^11.4.18",
     "expo-secure-store": "~11.1.0",
-    "expo-local-authentication": "~12.1.0"
+    "expo-local-authentication": "~12.1.0",
+    "expo-updates": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

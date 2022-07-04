@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { View, Linking } from "react-native";
 import { MainStackParamList } from "../types/navigation";
+
+import { supabase } from "../lib/initSupabase";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Layout,
@@ -26,20 +28,6 @@ export default function ({
     <Layout>
       <TopNav
         middleContent="ExamplePage"
-        rightContent={
-          <Ionicons
-            name={isDarkmode ? "sunny" : "moon"}
-            size={20}
-            color={isDarkmode ? themeColor.white100 : themeColor.dark}
-          />
-        }
-        rightAction={() => {
-          if (isDarkmode) {
-            setTheme("light");
-          } else {
-            setTheme("dark");
-          }
-        }}
       />
       <View
         style={{
@@ -50,27 +38,18 @@ export default function ({
       >
         <Section style={{ marginTop: 20 }}>
           <SectionContent>
-            <Text fontWeight="bold" style={{ textAlign: "center" }}>
-              These UI components provided by Rapi UI
-            </Text>
-            <TextInput
-          value={userName}
-          onChangeText={(username) => setUserName(username)}
-          placeholder={'Enter Any value'}
-        />
-            <Button
-              style={{ marginTop: 10 }}
-              text="Rapi UI Documentation"
-              status="info"
-              onPress={() => Linking.openURL("https://rapi-ui.kikiding.space/")}
-            />
-            <Button
-              text="Go to second screen"
-              onPress={() =>
-                navigation.navigate('SecondScreen', {
-                  paramKey: userName,
-                })
-              }
+          <Button
+              status="danger"
+              text="Logout"
+              onPress={async () => {
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                 // alert("Signed out!");
+                }
+                if (error) {
+                  alert(error.message);
+                }
+              }}
               style={{
                 marginTop: 10,
               }}

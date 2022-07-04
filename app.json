@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/pet.jpg",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "MyPet.apk"
     },
     "web": {
       "favicon": "./assets/pet.jpg"

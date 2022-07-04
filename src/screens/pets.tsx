@@ -101,10 +101,18 @@ export default function ({
   return (
     <Layout>
       <TopNav
+        middleContent=
+        {
+          <Text size="md" fontWeight="bold" size="h2" style={styles.upcontent}>
+          Mis mascotas
+        </Text>
+        }
+        
         rightContent={
           <Ionicons
             name="add"
             size={20}
+            style={styles.upcontent}
             //color={isDarkmode ? themeColor.white100 : themeColor.dark}
           />
         }
@@ -115,9 +123,6 @@ export default function ({
             }>
         <Section>
           <View style={styles.container}>
-            <Text size="md" fontWeight="bold" size="h1" style={styles.titulo}>
-              Mis mascotas
-            </Text>
             <Text size="md" fontWeight="light" size="h3" style={styles.titulo}>
               Aqui apareceran tus mascotas en cuanto las registres :)
             </Text>
@@ -207,6 +212,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "column",
     margin: 10,
+  },
+  upcontent:{
+padding: 1,
+color: "#49392C"
   },
   widget: {
     flex: 2,
