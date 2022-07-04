@@ -20,6 +20,9 @@ export default function ({
 }: NativeStackScreenProps<MainStackParamList, "MainTabs">) {
   return (
     <Layout>
+      <TopNav
+      middleContent = "Inicio"
+      />
       <View
       
         style={{

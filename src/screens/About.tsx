@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Linking } from "react-native";
+import { View, Linking, StyleSheet } from "react-native";
 import { MainStackParamList } from "../types/navigation";
 
 import { supabase } from "../lib/initSupabase";
@@ -27,7 +27,12 @@ export default function ({
   return (
     <Layout>
       <TopNav
-        middleContent="ExamplePage"
+        middleContent=
+        {
+          <Text size="md" fontWeight="bold" size="h2" style={styles.upcontent}>
+          Mis mascotas
+        </Text>
+        }
       />
       <View
         style={{
@@ -36,11 +41,15 @@ export default function ({
           justifyContent: "center",
         }}
       >
-        <Section style={{ marginTop: 20 }}>
+        <Section style={styles.seccion}>
           <SectionContent>
+            <Text style={styles.contenido}>
+              Mypet
+            </Text>
+            <Text style={styles.texto}>Aplicacion para mascotas</Text>
           <Button
               status="danger"
-              text="Logout"
+              text="Cerrar sesión"
               onPress={async () => {
                 const { error } = await supabase.auth.signOut();
                 if (!error) {
@@ -60,3 +69,21 @@ export default function ({
     </Layout>
   );
 }
+
+const styles = StyleSheet.create({
+  upcontent:{
+    
+padding: 1,
+color: "#49392C"
+  },
+  contenido: {
+    alignSelf: "center"
+  },
+  seccion: {
+    padding: 15
+  },
+  texto:{
+    padding: 10
+  }
+});
+
